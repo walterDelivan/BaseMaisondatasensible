@@ -612,34 +612,47 @@ app.get('/obtenerPreciosGlobales', (req, res) => {
 
 
 
-
-
 // ========================
 // Conexión a MongoDB
-mongoose.connect('mongodb://localhost:27017/maisonstate', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Conectado a MongoDB'))
   .catch((err) => console.error('Error de conexión a MongoDB', err));
 
-  const reservaSchema = new mongoose.Schema({
-    id: String,
-    id_propiedad: String,
-    estado: { type: String, default: 'pendiente' },
-    fecha_inicio: Date,
-    fecha_fin: Date,           // <-- nuevo campo agregado aquí
-    cantidad_noches: Number,
-    precio: Number,
-    nombre_cliente: String,
-    viajeros: Number, // Número de viajeros
-    fecha_creacion: { type: Date, default: Date.now },
-    comprobanteArchivo: String,  // Para almacenar el archivo comprobante
-    id_google: String,           // ✅ Nuevo campo agregado
-    porcentaje_pago: Number      // ✅ Porcentaje del pago elegido (ej: 30, 50, 100)
-  });
-  
+// ========================
+// Esquema de reservas
+const reservaSchema = new mongoose.Schema({
+    id: String, // Identificador único de la reserva
 
+    id_propiedad: String, // ID de la propiedad asociada a la reserva
+
+    estado: { 
+        type: String, 
+        default: 'pendiente' // Estado inicial de la reserva
+    },
+
+    fecha_inicio: Date, // Fecha de inicio de la estadía
+
+    fecha_fin: Date, // Fecha de fin de la estadía
+
+    cantidad_noches: Number, // Cantidad total de noches reservadas
+
+    precio: Number, // Precio total de la reserva
+
+    nombre_cliente: String, // Nombre del cliente que reserva
+
+    viajeros: Number, // Cantidad de personas
+
+    fecha_creacion: { 
+        type: Date, 
+        default: Date.now // Fecha automática cuando se crea la reserva
+    },
+
+    comprobanteArchivo: String, // Ruta o nombre del archivo del comprobante de pago
+
+    id_google: String, // ID del usuario si inició sesión con Google
+
+    porcentaje_pago: Number // Porcentaje pagado (ej: 30, 50, 100)
+});
 
 
 const Reserva = mongoose.model('Reserva', reservaSchema);
@@ -2332,13 +2345,9 @@ console.log('URI MONGO =>', process.env.MONGO_URI);
 // ==========================================
 // Conexión a MongoDB
 // ==========================================
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('Conexión a MongoDB exitosa'))
-.catch(err => console.error('Error al conectar a MongoDB:', err));
-
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Conexión a MongoDB exitosa'))
+  .catch(err => console.error('Error al conectar a MongoDB:', err));
 app.use((req, res, next) => {
   if (req.session.usuario) {
     req.user = req.session.usuario; // lo que guardaste al loguear
