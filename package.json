@@ -10,10 +10,26 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "body-parser": "^2.2.2",
     "cors": "^2.8.6",
+    "crypto": "^1.0.1",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^8.3.1",
+    "express-session": "^1.19.0",
+    "google-auth-library": "^10.6.2",
     "helmet": "^8.1.0",
-    "mongodb": "^7.1.0"
+    "mongodb": "^7.1.0",
+    "mongoose": "^9.3.1",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^8.0.3",
+    "openai": "^6.32.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "socket.io": "^4.8.3",
+    "speakeasy": "^2.0.0",
+    "xss-clean": "^0.1.4"
   }
 }
