@@ -1778,12 +1778,8 @@ app.get('/api/usuarios', async (req, res) => {
 
 
 const router = express.Router();
-// Ruta de prueba
-router.get('/test', (req, res) => {
-  res.json({ mensaje: '¡Backend funcionando!' });
-});
-
-module.exports = router;
+const testRoutes = require('./routes/testRoutes');
+app.use('/api', testRoutes); // todas las rutas del router se montan en /api
 app.get('/api/estadisticas', async (req, res) => {
   try {
     // Validar autenticación y rol admin
