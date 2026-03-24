@@ -1778,7 +1778,7 @@ app.get('/api/usuarios', async (req, res) => {
 
 
 const router = express.Router();
-const testRoutes = require('./routes/testRoutes');
+const testRoutes = require('./routes/testRoutes.js');
 app.use('/api', testRoutes); // todas las rutas del router se montan en /api
 app.get('/api/estadisticas', async (req, res) => {
   try {
