@@ -5,7 +5,6 @@ const helmet = require("helmet");
 const speakeasy = require('speakeasy');
 const crypto = require("crypto");
 const rateLimit = require('express-rate-limit');
-const mongoSanitize = require("express-mongo-sanitize");
 const express = require('express');  // Framework para el servidor
 const app = express();  // Creamos la instancia de la aplicación Express
 const cron = require('node-cron');
@@ -108,7 +107,6 @@ app.use(
 
 
 
-app.use(mongoSanitize());    // Limpia operadores peligrosos tipo $ne, $gt
 
 
 const url = require('url');
