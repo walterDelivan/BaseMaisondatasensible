@@ -2,7 +2,6 @@
 // Módulos necesarios
 // ==========================================
 const helmet = require("helmet");
-const xss = require("xss-clean");
 const speakeasy = require('speakeasy');
 const crypto = require("crypto");
 const rateLimit = require('express-rate-limit');
@@ -109,7 +108,6 @@ app.use(
 
 
 
-app.use(xss());               // Limpia HTML malicioso
 app.use(mongoSanitize());    // Limpia operadores peligrosos tipo $ne, $gt
 
 
