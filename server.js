@@ -615,7 +615,7 @@ app.get('/obtenerPreciosGlobales', (req, res) => {
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Conectado a MongoDB'))
   .catch((err) => console.error('Error de conexión a MongoDB', err));
-
+console.log(mongoose.connection.name);
 // ========================
 // Esquema de reservas
 const reservaSchema = new mongoose.Schema({
