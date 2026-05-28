@@ -600,6 +600,8 @@ app.get('/obtenerNoches', (req, res) => {
   // Retornamos las noches calculadas, si no hay datos retornamos 0
   res.json({ noches: propiedadesConPrecioGlobal[0]?.noches || 0 });
 });
+    
+
 
 // Ruta para obtener todos los precios globales almacenados
 app.get('/obtenerPreciosGlobales', (req, res) => {
