@@ -611,11 +611,6 @@ app.get('/obtenerPreciosGlobales', (req, res) => {
 
 
 // ========================
-// Conexión a MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('Conectado a MongoDB'))
-  .catch((err) => console.error('Error de conexión a MongoDB', err));
-console.log(mongoose.connection.name);
 // ========================
 // Esquema de reservas
 const reservaSchema = new mongoose.Schema({
@@ -2345,8 +2340,14 @@ console.log('URI MONGO =>', process.env.MONGO_URI);
 // Conexión a MongoDB
 // ==========================================
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('Conexión a MongoDB exitosa'))
+  .then(() => {
+    console.log('Conexión a MongoDB exitosa');
+
+    // 🔥 Mostrar nombre real de DB
+    console.log('Base conectada:', mongoose.connection.db.databaseName);
+  })
   .catch(err => console.error('Error al conectar a MongoDB:', err));
+
 app.use((req, res, next) => {
   if (req.session.usuario) {
     req.user = req.session.usuario; // lo que guardaste al loguear
