@@ -2924,13 +2924,19 @@ cron.schedule('* * * * *', async () => {
   }
 });
 
-
 const adminRoutes = require('./routes/admin/ninja-tuna');
 app.use('/admin', adminRoutes);
-const authAdmin = require('./middlewares/authAdmin.js'); // ruta según donde guardes el middleware
+
+const authAdmin = require('./middlewares/authAdmin.js');
 
 // Ruta protegida para los archivos de secciones del admin
 app.get('/admin/:seccion', (req, res) => {
+
+  console.log("SESSION:", req.session);
+  console.log("USUARIO:", req.session?.usuario);
+  console.log("REQ.USER:", req.user);
+  console.log("AUTH:", req.isAuthenticated?.());
+
   // 🔐 Verificación de sesión y rol admin
   if (!req.isAuthenticated?.() || !req.user || req.user.rol !== 'admin') {
     console.log('🚫 Acceso no autorizado, redirigiendo al login...');
