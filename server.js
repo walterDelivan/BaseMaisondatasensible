@@ -3025,7 +3025,8 @@ app.get('/api/filtrar', [
 
     // Buscar propiedades iniciales
     let propiedadesFiltradas = await Propiedad.find(filtro);
-
+console.log("FILTRO:", filtro);
+console.log("PROPIEDADES ENCONTRADAS:", propiedadesFiltradas);
     // --- FILTRO POR FECHAS BLOQUEADAS ---
     if (checkin && checkout) {
       const bloqueos = await Bloqueo.find({
