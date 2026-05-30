@@ -2924,19 +2924,13 @@ cron.schedule('* * * * *', async () => {
   }
 });
 
+
 const adminRoutes = require('./routes/admin/ninja-tuna');
 app.use('/admin', adminRoutes);
-
-const authAdmin = require('./middlewares/authAdmin.js');
+const authAdmin = require('./middlewares/authAdmin.js'); // ruta según donde guardes el middleware
 
 // Ruta protegida para los archivos de secciones del admin
 app.get('/admin/:seccion', (req, res) => {
-
-  console.log("SESSION:", req.session);
-  console.log("USUARIO:", req.session?.usuario);
-  console.log("REQ.USER:", req.user);
-  console.log("AUTH:", req.isAuthenticated?.());
-
   // 🔐 Verificación de sesión y rol admin
   if (!req.isAuthenticated?.() || !req.user || req.user.rol !== 'admin') {
     console.log('🚫 Acceso no autorizado, redirigiendo al login...');
@@ -3028,7 +3022,46 @@ app.get('/api/filtrar', [
 
     if (exprFilters.length === 1) filtro.$expr = exprFilters[0];
     else if (exprFilters.length > 1) filtro.$expr = { $and: exprFilters };
+// Buscar propiedades iniciales
+let propiedadesFiltradas = await Propiedad.find(filtro);
 
+console.log("FILTRO MONGO:", JSON.stringify(filtro, null, 2));
+console.log("PROPIEDADES ENCONTRADAS:", propiedadesFiltradas.map(p => ({
+  id: p.id_propiedad,
+  ubicacion: p.ubicacion,
+  capacidad: p.capacidad
+})));
+
+// --- FILTRO POR FECHAS BLOQUEADAS ---
+if (checkin && checkout) {
+
+  console.log("CHECKIN:", checkin);
+  console.log("CHECKOUT:", checkout);
+
+  const bloqueos = await Bloqueo.find({
+    fecha_inicio: { $lte: checkout },
+    fecha_fin: { $gte: checkin }
+  }).lean();
+
+  console.log("BLOQUEOS ENCONTRADOS:", bloqueos);
+
+  const propiedadesBloqueadas = new Set(
+    bloqueos.map(b => b.id_propiedad)
+  );
+
+  console.log("PROPIEDADES BLOQUEADAS:", [...propiedadesBloqueadas]);
+
+  propiedadesFiltradas = propiedadesFiltradas.filter(
+    p => !propiedadesBloqueadas.has(p.id_propiedad)
+  );
+
+  console.log(
+    "PROPIEDADES DESPUES DEL FILTRO:",
+    propiedadesFiltradas.map(p => p.id_propiedad)
+  );
+}
+
+res.json(propiedadesFiltradas);
     // Buscar propiedades iniciales
     let propiedadesFiltradas = await Propiedad.find(filtro);
 
