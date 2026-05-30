@@ -3022,46 +3022,7 @@ app.get('/api/filtrar', [
 
     if (exprFilters.length === 1) filtro.$expr = exprFilters[0];
     else if (exprFilters.length > 1) filtro.$expr = { $and: exprFilters };
-// Buscar propiedades iniciales
-let propiedadesFiltradas = await Propiedad.find(filtro);
 
-console.log("FILTRO MONGO:", JSON.stringify(filtro, null, 2));
-console.log("PROPIEDADES ENCONTRADAS:", propiedadesFiltradas.map(p => ({
-  id: p.id_propiedad,
-  ubicacion: p.ubicacion,
-  capacidad: p.capacidad
-})));
-
-// --- FILTRO POR FECHAS BLOQUEADAS ---
-if (checkin && checkout) {
-
-  console.log("CHECKIN:", checkin);
-  console.log("CHECKOUT:", checkout);
-
-  const bloqueos = await Bloqueo.find({
-    fecha_inicio: { $lte: checkout },
-    fecha_fin: { $gte: checkin }
-  }).lean();
-
-  console.log("BLOQUEOS ENCONTRADOS:", bloqueos);
-
-  const propiedadesBloqueadas = new Set(
-    bloqueos.map(b => b.id_propiedad)
-  );
-
-  console.log("PROPIEDADES BLOQUEADAS:", [...propiedadesBloqueadas]);
-
-  propiedadesFiltradas = propiedadesFiltradas.filter(
-    p => !propiedadesBloqueadas.has(p.id_propiedad)
-  );
-
-  console.log(
-    "PROPIEDADES DESPUES DEL FILTRO:",
-    propiedadesFiltradas.map(p => p.id_propiedad)
-  );
-}
-
-res.json(propiedadesFiltradas);
     // Buscar propiedades iniciales
     let propiedadesFiltradas = await Propiedad.find(filtro);
 
