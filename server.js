@@ -2993,10 +2993,10 @@ app.get('/api/filtrar', [
   }
 
   const ubicacion = req.query.ubicacion ? req.query.ubicacion.trim() : null;
-  const personas = req.query.personas || null;
+  const personas = req.query.personas ? parseInt(req.query.personas) : null;
   const tipos = req.query.tipos ? sanitize(req.query.tipos).toLowerCase().split(',').map(t => t.trim()).filter(t => t) : [];
-  const dormitorios = req.query.dormitorios || 0;
-  const banos = req.query.banos || 0;
+const dormitorios = req.query.dormitorios ? parseInt(req.query.dormitorios) : 0;
+const banos = req.query.banos ? parseInt(req.query.banos) : 0;
   const servicios = req.query.servicios ? sanitize(req.query.servicios).toLowerCase().split(',').map(s => s.trim()).filter(s => s) : [];
 
   let precioMin = req.query.precioMin || 0;
