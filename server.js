@@ -3180,6 +3180,10 @@ const openai = new OpenAI({
 });
 // Ruta para procesar búsqueda IA
 // Ruta para procesar búsqueda IA
+app.get('/buscarIA', (req, res) => {
+  res.send('Ruta buscarIA funcionando');
+}); 
+
 app.post('/buscarIA', async (req, res) => {
   const { descripcion } = req.body;
 
