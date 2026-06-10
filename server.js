@@ -1937,25 +1937,28 @@ app.post('/auth/save-return-url', express.json(), (req, res) => {
 app.get('/auth/google', passport.authenticate('google', {
   scope: ['profile', 'email']
 }));
-
-// Callback de Google
 app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/registro', failureMessage: true }),
+  passport.authenticate('google', { failureRedirect: '/registro.html', failureMessage: true }),
   (req, res) => {
-    const returnUrl = req.session.returnUrl || '/';
-    delete req.session.returnUrl;
 
-    if (typeof req.user?.email !== 'string') {
-      console.warn("[callback] Email inválido recibido.");
-      return res.status(400).send("Error al obtener el correo.");
+    const returnUrl = req.session?.returnUrl || '/';
+
+    if (!req.session) {
+      console.error("[callback] Session no existe");
+      return res.status(500).send("Error de sesión");
+    }
+
+    if (!req.user || typeof req.user.email !== 'string') {
+      console.error("[callback] User inválido:", req.user);
+      return res.status(400).send("Error al obtener usuario");
     }
 
     req.session.userEmail = req.user.email;
+    delete req.session.returnUrl;
 
-    console.log("[callback] Login exitoso con Google para:", req.session.userEmail);
-    console.log("[callback] Redirigiendo a:", returnUrl);
+    console.log("[callback] Login exitoso:", req.user.email);
 
-    res.redirect(returnUrl);
+    return res.redirect(returnUrl);
   }
 );
 
