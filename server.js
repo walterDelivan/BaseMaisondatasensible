@@ -1345,7 +1345,7 @@ const bcryptjs = require('bcryptjs');
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://localhost:777/auth/google/callback"
+callbackURL: "https://basemaisondatasensible.onrender.com/auth/google/callback"
 }, async (token, tokenSecret, profile, done) => {
   try {
     const email = profile.emails[0].value;
